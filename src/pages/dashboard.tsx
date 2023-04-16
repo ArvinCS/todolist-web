@@ -10,51 +10,51 @@ import { TaskCard } from "./task_card";
 import { useTaskContext } from "@/context/task_context";
 
 export default function DashboardContainer() {
-    const { taskList } : any = useTaskContext();
-    // const [taskList, setTaskList] = useState<UserTask[]>([]);
+    // const { taskList } : any = useTaskContext();
+    const [taskList, setTaskList] = useState<UserTask[]>([]);
 
-    // const firestore = getFirestore(app);
-    // const coll = collection(firestore, "tasks");
-    // const q = query(coll, where("user_uid", "==", getCurrentUser()?.uid), orderBy("agenda_date", "desc"));
+    const firestore = getFirestore(app);
+    const coll = collection(firestore, "tasks");
+    const q = query(coll, where("user_uid", "==", getCurrentUser()?.uid), orderBy("agenda_date", "desc"));
 
-    // const fetchTasks = async () => {
-    //     const snapshot = await getDocs(q);
+    const fetchTasks = async () => {
+        const snapshot = await getDocs(q);
 
-    //     setTaskList(snapshot.docs.map<UserTask>((doc) => ({
-    //         id: doc.id,
-    //         title: doc.data()["title"],
-    //         description: doc.data()["description"],
-    //         status: doc.data()["status"],
-    //         agenda_date: doc.data()["agenda_date"].toDate(),
-    //         user_uid: getCurrentUser()!.uid,
-    //     })));
-    // };
+        setTaskList(snapshot.docs.map<UserTask>((doc) => ({
+            id: doc.id,
+            title: doc.data()["title"],
+            description: doc.data()["description"],
+            status: doc.data()["status"],
+            agenda_date: doc.data()["agenda_date"].toDate(),
+            user_uid: getCurrentUser()!.uid,
+        })));
+    };
 
-    // const unsub = onSnapshot(q, (doc) => {
-    //     const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
-    //     if(doc.metadata.hasPendingWrites){
-    //         const removedTask: string[] = [];
-    //         doc.docChanges().forEach((change) => {
-    //             console.log(change);
-    //             if (change.type === "removed") {
-    //                 removedTask.push(change.doc.id);
-    //             }
-    //         });
-    //         console.log(removedTask);
-    //         setTaskList(doc.docs.filter((doc) => !removedTask.includes(doc.id)).map<UserTask>((doc) => ({
-    //             id: doc.id,
-    //             title: doc.data()["title"],
-    //             description: doc.data()["description"],
-    //             status: doc.data()["status"],
-    //             agenda_date: doc.data()["agenda_date"].toDate(),
-    //             user_uid: getCurrentUser()!.uid,
-    //         })));
-    //     }
-    // });
+    const unsub = onSnapshot(q, (doc) => {
+        const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+        if(doc.metadata.hasPendingWrites){
+            const removedTask: string[] = [];
+            doc.docChanges().forEach((change) => {
+                console.log(change);
+                if (change.type === "removed") {
+                    removedTask.push(change.doc.id);
+                }
+            });
+            console.log(removedTask);
+            setTaskList(doc.docs.filter((doc) => !removedTask.includes(doc.id)).map<UserTask>((doc) => ({
+                id: doc.id,
+                title: doc.data()["title"],
+                description: doc.data()["description"],
+                status: doc.data()["status"],
+                agenda_date: doc.data()["agenda_date"].toDate(),
+                user_uid: getCurrentUser()!.uid,
+            })));
+        }
+    });
 
-    // useEffect(() => {
-    //     if(getCurrentUser() != null) fetchTasks();
-    // }, [getCurrentUser()]);
+    useEffect(() => {
+        if(getCurrentUser() != null) fetchTasks();
+    }, [getCurrentUser()]);
 
     return (
         <div className="m-1 bg-transparent min-h-screen py-2 px-8 w-full h-auto">
