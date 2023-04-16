@@ -1,13 +1,10 @@
 import app from "@/firebase/firebase";
 import { getCurrentUser } from "@/firebase/firebase_auth";
 import { UserTask } from "@/models/task";
-import { ArrowPathIcon, ClockIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { Grid, Modal, RingProgress } from "@mantine/core";
-import { useDisclosure } from '@mantine/hooks';
 import { collection, getDocs, getFirestore, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { TaskCard } from "./task_card";
-import { useTaskContext } from "@/context/task_context";
 
 export default function DashboardContainer() {
     // const { taskList } : any = useTaskContext();
