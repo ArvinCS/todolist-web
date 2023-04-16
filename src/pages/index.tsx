@@ -14,7 +14,7 @@ import { Button } from '@mantine/core';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { TaskModal, TaskModalData } from './task_modal';
 import { useDisclosure } from '@mantine/hooks';
-import { TaskContextProvider, useTaskContext } from '@/context/task_context';
+// import { TaskContextProvider, useTaskContext } from '@/context/task_context';
 // import admin from '../../lib/firebase'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center bg-main-background-color">
       <AuthContextProvider>
-        <TaskContextProvider>
+        {/* <TaskContextProvider> */}
           {(user == null || !(user as User).emailVerified) ? <p>Haven't signed in!</p> : <>
             <TaskModal formData={formData} opened={opened} close={close} onSubmit={async () => {
               await submitNewTask();
@@ -57,7 +57,7 @@ export default function Home() {
             </div>
               <DashboardContainer/>
           </>}
-        </TaskContextProvider>
+        {/* </TaskContextProvider> */}
       </AuthContextProvider>
     </main>
   )
